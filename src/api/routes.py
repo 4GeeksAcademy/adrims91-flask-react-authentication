@@ -46,6 +46,6 @@ def create_token():
 @jwt_required()
 def get_user():
     current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user = User.query.filter_by(email=current_user_id).first()
     return jsonify({"email": user.email, "id": user.id})
     

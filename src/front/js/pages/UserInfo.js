@@ -34,7 +34,7 @@ export const UserInfo = () => {
             }
         }
         fetchUser()
-    }, [])
+    }, [navigate])
 
     if (loading) {
         return <p>Loading user info...</p>
@@ -46,7 +46,7 @@ export const UserInfo = () => {
     return (
         user ? <>
             <div>
-                <h1>{user}</h1>
+                <h1>You are logged as {user.email}</h1>
             </div>
         </> : ''
     )
