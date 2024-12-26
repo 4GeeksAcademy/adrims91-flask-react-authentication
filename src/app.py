@@ -5,11 +5,13 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+from flask_jwt_extended import JWTManager
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
 
 # from models import Person
 
@@ -30,6 +32,9 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+app.config["JWT_SECRET_KEY"] = "super-mega-secret"  # ¡Cambia las palabras "super-secret" por otra cosa!
+jwt = JWTManager(app)
 
 # add the admin
 setup_admin(app)

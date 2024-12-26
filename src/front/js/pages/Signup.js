@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState , useContext } from "react";
 import { Context } from "../store/appContext";
 
 
@@ -9,6 +9,7 @@ export const Signup = () => {
 
 
 	return (
+		<div className="text-center mt-5">
 		<form onSubmit={(e) => {
 			e.preventDefault()
 			actions.signup(email, password)
@@ -31,6 +32,7 @@ export const Signup = () => {
 				value={"create user"}
 				type="submit"></input>
 		</form>
+		</div>
 	);
 };
 
