@@ -1,52 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
+import { Context } from "../store/appContext";
 
 export const UserInfo = () => {
 
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const { store, actions } = useContext(Context)
     const navigate = useNavigate()
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token')
-        if (!token) {
+        if (!store.token) {
             navigate("/api/login")
         }
-
-        const fetchUser = async () => {
-            try {
-                const response = await fetch('https://musical-broccoli-97qvx4wxr77p3xr75-3001.app.github.dev/api/user', {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + token
-                    }
-                })
-                if (response.ok) {
-                    const data = await response.json()
-                    setUser(data)
-                    setLoading(false)
-                }
-            } catch (error) {
-                setError(error)
-                setLoading(false)
-            }
-        }
-        fetchUser()
+        actions.fetchUser()
     }, [navigate])
 
-    if (loading) {
+    if (store.loading) {
         return <p>Loading user info...</p>
     }
-    if (error) {
-        return <p>error loading user, {error.message}</p>
+    if (store.error) {
+        return <p>error loading user, {store.error.message}</p>
     }
 
     return (
-        user ? <>
+        store.user ? <>
             <div>
-                <h1>You are logged as {user.email}</h1>
+                <h1>You are logged as {store.user.email}</h1>
             </div>
         </> : ''
     )

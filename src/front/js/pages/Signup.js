@@ -13,6 +13,8 @@ export const Signup = () => {
 		<form onSubmit={(e) => {
 			e.preventDefault()
 			actions.signup(email, password)
+			setEmail('')
+			setPassword('')
 		}}>
 			<input
 				placeholder="Email"
