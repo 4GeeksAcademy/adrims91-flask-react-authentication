@@ -3,17 +3,18 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-	const { actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const navigate = useNavigate()
-	const token = sessionStorage.getItem('token')
+
 
 	useEffect(() => {
-		if (token) {
+		if (store.token && store.isAuthenticated) {
+			alert('Authenticated.')
 			navigate("/api/user")
 		}
-	}, [token])
+	}, [store.token])
 
 	return (
 		<div className="text-center mt-5">
