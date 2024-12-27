@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 
 
 export const Signup = () => {
-	const { actions } = useContext(Context);
+	const {  actions } = useContext(Context);
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 

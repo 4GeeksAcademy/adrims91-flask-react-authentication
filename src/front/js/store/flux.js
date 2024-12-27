@@ -9,6 +9,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			signup: async (email, password) => {
+				const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				if (!emailPattern.test(email)) {
+					console.error('Email no válido');
+					alert('Email no válido')
+					setStore({ error: 'Email no válido' });
+					return; 
+				}
 				try {
 					const response = await fetch('https://musical-broccoli-97qvx4wxr77p3xr75-3001.app.github.dev/api/users', {
 						method: 'POST',
