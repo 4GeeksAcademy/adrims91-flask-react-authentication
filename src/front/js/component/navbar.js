@@ -14,7 +14,7 @@ export const Navbar = () => {
 					{store.isAuthenticated ? <> <Link to={"/api/user"}>
 						<button className="btn btn-success">Profile</button>
 					</Link>
-						<button onClick={actions.logout} className="btn btn-danger m-1">Close session</button>
+						<Link to={"/api/login"} onClick={actions.logout} className="btn btn-danger m-1">Close session</Link>
 					</>
 						:
 						<>
