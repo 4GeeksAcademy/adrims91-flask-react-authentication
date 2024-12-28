@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { appContext } from "../store/appContext";
 
 export const Navbar = () => {
-	const { store, actions } = useContext(Context)
+	const { state, logout } = useContext(appContext)
 	return (
 		<nav className="navbar d-flex">
 			<div className="container-fluid">
@@ -11,10 +11,10 @@ export const Navbar = () => {
 					<button className="btn btn-secondary">Home</button>
 				</Link>
 				<div className="justify-content-end">
-					{store.isAuthenticated ? <> <Link to={"/api/user"}>
+					{state.isAuthenticated ? <> <Link to={"/api/user"}>
 						<button className="btn btn-success">Profile</button>
 					</Link>
-						<Link to={"/api/login"} onClick={actions.logout} className="btn btn-danger m-1">Close session</Link>
+						<Link to={"/api/login"} onClick={logout} className="btn btn-danger m-1">Close session</Link>
 					</>
 						:
 						<>

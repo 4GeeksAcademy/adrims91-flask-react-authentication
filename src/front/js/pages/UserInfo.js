@@ -1,15 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Context } from "../store/appContext";
+import { appContext } from "../store/appContext";
 
 export const UserInfo = () => {
-    const { store } = useContext(Context);
+    const { state } = useContext(appContext);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [username, setUsername] = useState('')
-    const [inputValue, setInputValue] = useState('')
-    
-    
+
+
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -18,7 +17,7 @@ export const UserInfo = () => {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer " + store.token
+                        "Authorization": "Bearer " + state.token
                     }
                 });
                 if (response.ok) {
@@ -36,7 +35,7 @@ export const UserInfo = () => {
         };
 
         fetchUser();
-    }, [store.token]);
+    }, [state.token]);
 
     if (loading) {
         return <p>Loading user info...</p>;
@@ -46,20 +45,14 @@ export const UserInfo = () => {
         return <p>Error loading user info: {error}</p>;
     }
 
-    
+
 
 
 
     return (
         <>
             <div>
-                {!username ? (<><p>Username: <input onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        setUsername(inputValue)
-                    }
-                }} onChange={(e) => setInputValue(e.target.value)} value={inputValue}></input></p>
-                    <p>Email: {user.email}</p></>) : (<><p>Username: {username}</p>
-                        <p>Email: {user.email}</p></>)}
+                <p>Usuario auntenticado {user.email}</p>
             </div>
         </>
     );

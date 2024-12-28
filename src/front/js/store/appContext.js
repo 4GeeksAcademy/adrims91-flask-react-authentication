@@ -1,40 +1,67 @@
-import React, { useState, useEffect } from "react";
-import getState from "./flux.js";
+import React, { createContext, useReducer } from 'react';
+import { appReducer, initialState } from './appReducer';
 
-// Don't change, here is where we initialize our context, by default it's just going to be null.
-export const Context = React.createContext(null);
+export const appContext = createContext();
 
-// This function injects the global store to any view/component where you want to use it, we will inject the context to layout.js, you can see it here:
-// https://github.com/4GeeksAcademy/react-hello-webapp/blob/master/src/js/layout.js#L35
-const injectContext = PassedComponent => {
-	const StoreWrapper = props => {
-		//this will be passed as the contenxt value
-		const [state, setState] = useState(
-			getState({
-				getStore: () => state.store,
-				getActions: () => state.actions,
-				setStore: updatedStore =>
-					setState({
-						store: Object.assign(state.store, updatedStore),
-						actions: { ...state.actions }
-					})
-			})
-		);
+export const AppProvider = ({ children }) => {
+	const [state, dispatch] = useReducer(appReducer, initialState);
 
-		useEffect(() => {
-			
-		}, []);
-
-		// The initial value for the context is not null anymore, but the current state of this component,
-		// the context will now have a getStore, getActions and setStore functions available, because they were declared
-		// on the state of this component
-		return (
-			<Context.Provider value={state}>
-				<PassedComponent {...props} />
-			</Context.Provider>
-		);
+	const signup = async (email, password) => {
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailPattern.test(email)) {
+			dispatch({ type: 'SIGNUP_ERROR', payload: 'Email no válido' });
+			return;
+		}
+		try {
+			const response = await fetch('https://musical-broccoli-97qvx4wxr77p3xr75-3001.app.github.dev/api/users', {
+				method: 'POST',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({ email, password })
+			});
+			if (response.ok) {
+				const data = await response.json();
+				dispatch({ type: 'SIGNUP_SUCCESS' });
+				return data;
+			} else {
+				throw new Error('Signup failed');
+			}
+		} catch (error) {
+			dispatch({ type: 'SIGNUP_ERROR', payload: error.message });
+		}
 	};
-	return StoreWrapper;
-};
 
-export default injectContext;
+	const login = async (email, password) => {
+		try {
+			const response = await fetch('https://musical-broccoli-97qvx4wxr77p3xr75-3001.app.github.dev/api/token', {
+				method: 'POST',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({ email, password })
+			});
+			if (response.ok) {
+				const data = await response.json();
+				sessionStorage.setItem('token', data.token);
+				dispatch({ type: 'LOGIN_SUCCESS', payload: { token: data.token } });
+				return data;
+			} else {
+				throw new Error('Login failed');
+			}
+		} catch (error) {
+			dispatch({ type: 'LOGIN_ERROR', payload: error.message });
+		}
+	};
+
+	const logout = () => {
+		sessionStorage.removeItem('token');
+		dispatch({ type: 'LOGOUT' });
+	};
+
+	return (
+		<appContext.Provider value={{ state, signup, login, logout }}>
+			{children}
+		</appContext.Provider>
+	);
+};
