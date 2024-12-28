@@ -47,5 +47,7 @@ def create_token():
 def get_user():
     current_user_id = get_jwt_identity()
     user = User.query.filter_by(email=current_user_id).first()
-    return jsonify({"email": user.email, "id": user.id})
+    if not user:
+        return jsonify({"error": "You need to be authenticated"}), 409
+    return jsonify({"email": user.email, "id": user.id}), 200
     

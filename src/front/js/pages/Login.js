@@ -17,6 +17,8 @@ export const Login = () => {
 	}, [store.token])
 
 	return (
+		<>
+		
 		<div className="text-center mt-5">
 			<form onSubmit={(e) => {
 				e.preventDefault()
@@ -41,5 +43,6 @@ export const Login = () => {
 				></input>
 			</form>
 		</div>
+		</>
 	);
 };
