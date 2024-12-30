@@ -11,17 +11,17 @@ export const Navbar = () => {
 					<button className="btn btn-secondary">Home</button>
 				</Link>
 				<div className="justify-content-end">
-					{state.isAuthenticated ? <> <Link to={"/api/user"}>
+					{state.isAuthenticated ? <> <Link to={"/user"}>
 						<button className="btn btn-success">Profile</button>
 					</Link>
-						<Link to={"/api/login"} onClick={logout} className="btn btn-danger m-1">Close session</Link>
+						<Link to={"/login"} onClick={logout} className="btn btn-danger m-1">Close session</Link>
 					</>
 						:
 						<>
-							<Link to="/api/login">
+							<Link to="/login">
 								<button className="btn btn-primary m-1">Login</button>
 							</Link>
-							<Link to="/api/signup">
+							<Link to="/signup">
 								<button className="btn btn-primary">Register</button>
 							</Link>
 						</>
