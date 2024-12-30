@@ -6,20 +6,23 @@ export const Login = () => {
 	const { state, login } = useContext(appContext);
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
-	const [message, setMessage] = useState('')
+	const [showMessage, setShowMessage] = useState("");
 	const navigate = useNavigate()
-
 
 
 	useEffect(() => {
 		if (state.token && state.isAuthenticated) {
-			alert('Authenticated.')
-			navigate("/api/user")
+			navigate("/user")
 		}
-		if (state.error) {
-			setMessage(state.message)
+		if (state.message) {
+			setShowMessage(state.message);
+			const timer = setTimeout(() => {
+				setShowMessage(false);
+				state.message = null;
+			}, 3000);
+			return () => clearTimeout(timer);
 		}
-	}, [state.error, state.isAuthenticated])
+	}, [state.message]);
 
 	return (
 		<>
@@ -48,7 +51,7 @@ export const Login = () => {
 						value={"Send"}
 					></input>
 				</form>
-				{message && <div className="alert alert-info m-auto" role="alert">{message}</div>}
+				{showMessage && <div className="alert alert-info m-auto" role="alert">{state.message}</div>}
 			</div>
 		</>
 	);

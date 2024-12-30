@@ -4,7 +4,7 @@ const initialState = {
 	user: sessionStorage.getItem('user'),
 	error: null,
 	message: null,
-	username: sessionStorage.getItem('username')
+	loading: true
 };
 
 const appReducer = (state, action) => {
@@ -12,13 +12,15 @@ const appReducer = (state, action) => {
 		case 'SIGNUP_SUCCESS':
 			return {
 				...state,
-				error: null
+				error: null,
+				message: action.payload.message,
+				user: action.payload.user
 			};
 		case 'SIGNUP_ERROR':
 			return {
 				...state,
-				error: action.payload,
-				message: action.payload
+				error: action.payload.error,
+				message: action.payload.message
 			};
 		case 'LOGIN_SUCCESS':
 			return {
@@ -26,20 +28,37 @@ const appReducer = (state, action) => {
 				isAuthenticated: true,
 				token: action.payload.token,
 				error: null,
-				message: action.payload
+				message: action.payload.message,
+				user: action.payload.user
 			};
 		case 'LOGIN_ERROR':
 			return {
 				...state,
-				error: action.payload,
-				message: action.payload
+				error: action.payload.error,
+				message: action.payload.message
 			};
+		case 'FETCH_USER_SUCCESS':
+			return {
+				...state,
+				error: null,
+				loading: false,
+				message: action.payload.message
+			}
+		case 'FETCH_USER_ERROR':
+			return {
+				...state,
+				error: action.payload.error,
+				message: action.payload.message,
+				loading: false
+			}
 		case 'LOGOUT':
 			return {
 				...state,
 				isAuthenticated: false,
 				token: null,
-				error:null
+				error: null,
+				message: action.payload.message,
+				user: null
 			};
 		default:
 			return state;

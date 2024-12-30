@@ -5,28 +5,29 @@ export const Signup = () => {
 	const { state, signup } = useContext(appContext);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [message, setMessage] = useState(null);
+	const [showMessage, setShowMessage] = useState(false);
 
 	useEffect(() => {
-		if (state.error) {
-			setMessage('Error creating user.');
+		if (state.message) {
+			setShowMessage(true);
+			const timer = setTimeout(() => {
+				setShowMessage(false);
+				state.message = null
+				state.error = null
+			}, 2000);
+			return () => clearTimeout(timer);
 		}
-		if (state.error === null && state.isAuthenticated) {
-			setMessage('User created successfully.');
-		}
-	}, [state.error, state.isAuthenticated]);
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		await signup(email, password);
-		setEmail('');
-		setPassword('');
-	};
+	}, [state.message]);
 
 	return (
 		<>
 			<div className="text-center mt-5 mb-3">
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={(e) => {
+					e.preventDefault();
+					signup(email, password);
+					setEmail("");
+					setPassword("");
+				}}>
 					<input
 						type="text"
 						className="me-1"
@@ -47,7 +48,7 @@ export const Signup = () => {
 						value={"Create User"}
 						type="submit"></input>
 				</form>
-				{message && <div className="alert alert-info m-auto" role="alert">{message}</div>}
+				{showMessage && <div className="alert alert-info m-auto" role="alert">{state.message}</div>}
 			</div>
 		</>
 	);
