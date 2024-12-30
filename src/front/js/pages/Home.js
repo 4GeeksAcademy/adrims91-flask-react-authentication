@@ -7,16 +7,14 @@ export const Home = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!state.token){
+        if (!state.token) {
             navigate('/login')
         }
     }, [state.token, navigate])
 
     return (
         <>
-            {!state.isAuthenticated ? <h3>Inicia sesión para ver todas las funciones!</h3> : <h1>Bienvenido!</h1>}
+            <h1>Bienvenido {state.username ? state.username : state.user}!</h1>
         </>
-
     );
-
 };

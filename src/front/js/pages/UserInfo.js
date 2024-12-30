@@ -52,7 +52,7 @@ export const UserInfo = () => {
     return (
         <>
             <div>
-                <p>Usuario auntenticado {user.email}</p>
+                <p>Usuario autenticado {state.user}</p>
             </div>
         </>
     );

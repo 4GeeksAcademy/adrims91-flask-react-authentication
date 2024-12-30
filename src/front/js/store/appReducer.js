@@ -1,7 +1,10 @@
 const initialState = {
 	isAuthenticated: !!sessionStorage.getItem('token'),
 	token: sessionStorage.getItem('token'),
-	error: null
+	user: sessionStorage.getItem('user'),
+	error: null,
+	message: null,
+	username: sessionStorage.getItem('username')
 };
 
 const appReducer = (state, action) => {
@@ -14,25 +17,29 @@ const appReducer = (state, action) => {
 		case 'SIGNUP_ERROR':
 			return {
 				...state,
-				error: action.payload
+				error: action.payload,
+				message: action.payload
 			};
 		case 'LOGIN_SUCCESS':
 			return {
 				...state,
 				isAuthenticated: true,
 				token: action.payload.token,
-				error: null
+				error: null,
+				message: action.payload
 			};
 		case 'LOGIN_ERROR':
 			return {
 				...state,
-				error: action.payload
+				error: action.payload,
+				message: action.payload
 			};
 		case 'LOGOUT':
 			return {
 				...state,
 				isAuthenticated: false,
-				token: null
+				token: null,
+				error:null
 			};
 		default:
 			return state;

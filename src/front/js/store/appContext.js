@@ -44,7 +44,8 @@ export const AppProvider = ({ children }) => {
 			if (response.ok) {
 				const data = await response.json();
 				sessionStorage.setItem('token', data.token);
-				dispatch({ type: 'LOGIN_SUCCESS', payload: { token: data.token } });
+				sessionStorage.setItem('user', data.email)
+				dispatch({ type: 'LOGIN_SUCCESS', payload: { token: data.token, user:data.email, message: 'Success.' } });
 				return data;
 			} else {
 				throw new Error('Login failed');

@@ -17,8 +17,7 @@ export const Login = () => {
 			navigate("/api/user")
 		}
 		if (state.error) {
-			setMessage('Error, bad email or password.')
-			state.error = null
+			setMessage(state.message)
 		}
 	}, [state.error, state.isAuthenticated])
 
